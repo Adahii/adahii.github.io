@@ -7,8 +7,9 @@
 
     <!-- AdSense global script goes here -->
     <!--
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-            crossorigin="anonymous"></script>
+    <script async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      crossorigin="anonymous"></script>
     -->
 
     <style>
@@ -23,21 +24,48 @@
           sans-serif;
         background: #0b1120;
         color: #e5e7eb;
-      }
-
-      .page {
         display: flex;
         flex-direction: column;
-        height: 100vh;
       }
 
-      .app-frame {
-        flex: 1 1 auto;
-        border: none;
-        width: 100%;
+      main {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        text-align: center;
       }
 
-      .banner {
+      h1 {
+        margin-bottom: 8px;
+        font-size: 24px;
+      }
+
+      p {
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #9ca3af;
+      }
+
+      a.launch-btn {
+        display: inline-block;
+        padding: 12px 22px;
+        border-radius: 999px;
+        background: #22c55e;
+        color: #020617;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      a.launch-btn:hover {
+        filter: brightness(1.05);
+      }
+
+      footer {
         flex: 0 0 auto;
         padding: 8px 12px;
         background: #020617;
@@ -49,20 +77,23 @@
     </style>
   </head>
   <body>
-    <div class="page">
-      <!-- Streamlit app “mirrored” inside iframe -->
-      <iframe
-        class="app-frame"
-        src="https://pokemonauctiondraft.streamlit.app/"
-        title="Pokémon Auction Draft Tool"
-        loading="lazy"
-      ></iframe>
+    <main>
+      <h1>Pokémon Auction Draft Tool</h1>
+      <p>Click below to open the live draft app in a new tab.</p>
 
-      <!-- Bottom banner just for ads / small text -->
-      <div class="banner">
-        <!-- Replace this comment with your AdSense ad unit -->
-        Banner space – ads go here.
-      </div>
-    </div>
+      <a
+        class="launch-btn"
+        href="https://pokemonauctiondraft.streamlit.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open Draft App
+      </a>
+    </main>
+
+    <footer>
+      <!-- Replace this comment with your AdSense banner unit -->
+      Banner space – ads will appear here.
+    </footer>
   </body>
 </html>
