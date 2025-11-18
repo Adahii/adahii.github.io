@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pokémon Auction Draft Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Later: AdSense global script goes here -->
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #0b1120;
+        color: #e5e7eb;
+      }
+      header {
+        padding: 16px 24px;
+        background: #020617;
+        border-bottom: 1px solid #111827;
+      }
+      h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      p.subtitle {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #9ca3af;
+      }
+      main {
+        padding: 16px 24px 24px;
+      }
+      .layout {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .app-container {
+        flex: 3;
+        min-width: 280px;
+      }
+      .sidebar {
+        flex: 1;
+        min-width: 260px;
+        background: #020617;
+        border-radius: 8px;
+        padding: 12px 16px;
+        border: 1px solid #111827;
+      }
+      .card {
+        background: #020617;
+        border-radius: 8px;
+        padding: 12px 16px;
+        border: 1px solid #111827;
+        margin-bottom: 12px;
+      }
+      iframe {
+        width: 100%;
+        height: 80vh;
+        border: none;
+        border-radius: 8px;
+        background: #020617;
+      }
+      footer {
+        padding: 12px 24px;
+        font-size: 12px;
+        color: #6b7280;
+        border-top: 1px solid #111827;
+        background: #020617;
+        text-align: center;
+      }
+      a {
+        color: #38bdf8;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Pokémon Auction Draft Tool</h1>
+      <p class="subtitle">
+        Run auction drafts with live budgets, parties, and exports.
+      </p>
+    </header>
+
+    <main>
+      <div class="layout">
+        <div class="app-container">
+          <div class="card">
+            <h2>Live Draft App</h2>
+            <p style="font-size: 13px; color: #9ca3af;">
+              This is the interactive Streamlit app. Share the draft code with
+              your friends so they can join.
+            </p>
+            <div class="card">
+              <h2>Live Draft App</h2>
+              <p style="font-size: 13px; color: #9ca3af;">
+                Click the button below to open the live draft app in a new tab.
+                Share the draft code with your friends so they can join.
+              </p>
+            
+              <!-- Primary: open Streamlit app in new tab -->
+              <p>
+                <a
+                  href="https://pokemonauctiondraft.streamlit.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="
+                    display:inline-block;
+                    padding:10px 18px;
+                    border-radius:6px;
+                    background:#22c55e;
+                    color:#020617;
+                    text-decoration:none;
+                    font-weight:600;
+                  "
+                >
+                  Open Draft App
+                </a>
+              </p>
+            
+              <!-- Optional: embedded iframe (may fail on some networks) -->
+              <iframe
+                src="https://pokemonauctiondraft.streamlit.app/?embed=true"
+                title="Pokémon Draft App (embedded)"
+                loading="lazy"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+        
+        <aside class="sidebar">
+          <h2 style="margin-top:0;">About this tool</h2>
+          <p style="font-size: 13px; color:#9ca3af;">
+            This fan-made tool helps you run Pokémon auction drafts for
+            Showdown / Wi-Fi leagues. Set budgets, nominate Pokémon, bid in
+            real time, and export results.
+          </p>
+
+          <div class="card">
+            <h3 style="margin-top:0;">How it works</h3>
+            <ul style="padding-left:18px; font-size:13px; color:#9ca3af;">
+              <li>Host creates a game and shares the code.</li>
+              <li>Players join the lobby, pick a name and icon.</li>
+              <li>Each player nominates and bids on their turn.</li>
+              <li>Teams and budgets update live.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0;">Sponsored</h3>
+            <p style="font-size:13px; color:#9ca3af;">
+              This area will later hold Google AdSense units (sidebar ads).
+            </p>
+            <!-- Later: sidebar ad unit goes here -->
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer>
+      © 2025 Pokémon Auction Draft Tool — Unofficial fan project. Not
+      affiliated with Nintendo, Game Freak, or The Pokémon Company.
+    </footer>
+  </body>
+</html>
