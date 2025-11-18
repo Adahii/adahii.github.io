@@ -5,6 +5,7 @@
     <title>Pokémon Auction Draft Tool</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <!-- AdSense global code (use YOUR ca-pub id) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3724264000856562"
      crossorigin="anonymous"></script>
 
@@ -30,7 +31,7 @@
 
       .app-shell {
         flex: 1 1 auto;
-        min-height: 0; /* so iframe can shrink properly */
+        min-height: 0;
       }
 
       .app-shell iframe {
@@ -42,12 +43,22 @@
 
       .banner {
         flex: 0 0 auto;
-        padding: 8px 12px;
         background: #020617;
         border-top: 1px solid #111827;
-        text-align: center;
-        font-size: 12px;
-        color: #9ca3af;
+        padding: 4px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Keep it a short bar */
+        min-height: 60px;
+        max-height: 120px;
+      }
+
+      .banner .adsbygoogle {
+        display: block;
+        width: 100%;
+        max-width: 970px; /* typical large banner width */
+        margin: 0 auto;
       }
     </style>
   </head>
@@ -61,7 +72,7 @@
         ></iframe>
       </div>
 
-      <div class="banner">
+      <footer class="banner">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3724264000856562"
              crossorigin="anonymous"></script>
         <!-- Bottom Banner -->
@@ -74,7 +85,7 @@
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-      </div>
+      </footer>
     </div>
   </body>
 </html>
