@@ -1,93 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pokémon Auction Draft Tool</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Underground Cobblemon Fight Club</title>
+  <meta name="description" content="Challenge the Champion. Pay entry, battle under stadium rules, claim the pot." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="card hero">
+      <div>
+        <h1>Underground Cobblemon Fight Club</h1>
+        <p class="sub">Pay the entry. Challenge the Champion. Winner takes the cut.</p>
+      </div>
+      <div class="pillrow">
+        <span class="pill">Server: <strong>YOUR SERVER NAME</strong></span>
+        <span class="pill">Format: <strong>Singles</strong></span>
+        <span class="pill">Arena: <strong>Stadium</strong></span>
+      </div>
+    </header>
 
-    <!-- AdSense global code -->
-    <script async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3724264000856562"
-      crossorigin="anonymous"></script>
+    <section class="grid">
+      <div class="card">
+        <h2>How it works</h2>
+        <ol class="clean">
+          <li>Challenger pays <strong>Entry Fee (X)</strong> in-server to the cashier/host.</li>
+          <li>You fight the current <strong>Champion</strong> under stadium rules.</li>
+          <li>If Champion wins: Champion receives <strong>Y%</strong> of entry.</li>
+          <li>If Challenger wins: Challenger becomes Champion and claims the posted reward rules.</li>
+        </ol>
 
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-      }
+        <div class="note">
+          <strong>Important:</strong> In-game currency/items only. No real-money gambling.
+        </div>
+      </div>
 
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        background: #0b1120;
-        color: #e5e7eb;
-      }
+      <div class="card">
+        <h2>Champion info</h2>
+        <div class="kv">
+          <div><span>Current Champion</span><strong id="champName">TBD</strong></div>
+          <div><span>Champion Cut</span><strong id="champCut">TBD%</strong></div>
+          <div><span>Entry Fee</span><strong id="entryFee">TBD</strong></div>
+          <div><span>Match Times</span><strong id="matchTimes">Most nights 8–11pm ET</strong></div>
+        </div>
+        <p class="muted">Host can update champion/fees anytime. Check stadium signs for final say.</p>
+      </div>
+    </section>
 
-      /* App iframe: full width, viewport height minus banner */
-      #app-frame {
-        display: block;
-        width: 100%;
-        height: calc(100vh - 80px); /* 80px reserved for banner */
-        border: none;
-      }
+    <section class="card">
+      <h2>Rules (quick view)</h2>
+      <div class="rules">
+        <div class="rule"><strong>1.</strong> Registration required (website form) before paying.</div>
+        <div class="rule"><strong>2.</strong> Pay entry to host/cashier only (screenshot proof).</div>
+        <div class="rule"><strong>3.</strong> Singles battle; no outside interference.</div>
+        <div class="rule"><strong>4.</strong> No mid-match team swaps. Team lock once you queue.</div>
+        <div class="rule"><strong>5.</strong> No intentional disconnects; DC = forfeit (unless server crash).</div>
+        <div class="rule"><strong>6.</strong> Healing items only if explicitly allowed on stadium board.</div>
+        <div class="rule"><strong>7.</strong> Banned mons/moves/items listed on stadium board override this site.</div>
+        <div class="rule"><strong>8.</strong> Best-of-1 by default; Best-of-3 only if both agree + posted.</div>
+        <div class="rule"><strong>9.</strong> Proof matters: clips/screenshots settle disputes.</div>
+        <div class="rule"><strong>10.</strong> Host decision is final to keep the line moving.</div>
+      </div>
+    </section>
 
-      /* Fixed-height banner strip on bottom */
-      footer.banner {
-        height: 80px;
-        min-height: 80px;
-        max-height: 80px;
-        background: #020617;
-        border-top: 1px solid #111827;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-      }
+    <section class="card">
+      <h2>Sign up to challenge</h2>
+      <p class="muted">Submit this form and you’ll get the payment + scheduling instructions.</p>
 
-      footer.banner .adsbygoogle {
-        display: block;
-        width: 100%;
-        max-width: 970px;
-        margin: 0 auto;
-      }
-      
-      .iframe-crop {
-        position: relative;
-        width: 100%;
-        height: 1050px;    /* slightly less than iframe content height */
-        overflow: hidden; /* crops anything that overflows */
-      }
-      
-      .iframe-crop iframe {
-        width: 100%;
-        height: 1100px;    /* taller than container so bottom gets cut off */
-        border: 0;
-        transform: translateY(-20px); /* optional: shift up/down as needed */
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Streamlit app -->
-    <div class="iframe-crop">
-      <iframe
-        id="app-frame"
-        src="https://pokemonauctiondraft.streamlit.app/?embedded=true"
-        title="Pokémon Auction Draft Tool"
-        loading="lazy"
-      ></iframe>
-    </div>
-    <!-- Bottom banner -->
-    <footer class="banner">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-3724264000856562"
-           data-ad-slot="5648157935"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+      <form id="signupForm" class="form">
+        <!-- Honeypot (bots fill this; humans won't see it) -->
+        <input type="text" name="website" id="website" class="honeypot" autocomplete="off" tabindex="-1" />
+
+        <label>
+          Minecraft IGN
+          <input name="ign" required maxlength="32" placeholder="Your in-game name" />
+        </label>
+
+        <label>
+          Discord (name#0000 or @name)
+          <input name="discord" required maxlength="64" placeholder="@yourdiscord" />
+        </label>
+
+        <label>
+          Preferred time window (ET)
+          <input name="timeWindow" required maxlength="80" placeholder="e.g., Tonight 9–10pm ET" />
+        </label>
+
+        <label>
+          Team notes (optional)
+          <textarea name="notes" rows="4" maxlength="400" placeholder="Anything I should know? (optional)"></textarea>
+        </label>
+
+        <div class="row">
+          <button type="submit" class="btn">Submit Challenge</button>
+          <span id="status" class="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <hr class="sep" />
+
+      <h3>Contact</h3>
+      <p>
+        Discord: <strong id="contactDiscord">YOUR DISCORD</strong><br/>
+        In-game: <strong id="contactIGN">YOUR IGN</strong>
+      </p>
+    </section>
+
+    <footer class="muted foot">
+      <p>Site is informational. Stadium signs + host ruling override if anything conflicts.</p>
     </footer>
-  </body>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
