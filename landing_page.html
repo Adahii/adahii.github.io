@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImmigratePath — Immigration Help That Makes Sense</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F4EF;
+    --cream-dark: #EDE9E1;
+    --ink: #1C1A17;
+    --ink-mid: #4A4740;
+    --ink-light: #8A867E;
+    --accent: #2B5C3F;
+    --accent-light: #E8F0EB;
+    --accent-mid: #3D7A58;
+    --warm-red: #C44B2B;
+    --border: #D9D4CB;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--accent) !important;
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent-mid) !important; }
+
+  /* HERO */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: var(--accent-mid); transform: translateY(-1px); }
+
+  .btn-ghost {
+    color: var(--ink-mid);
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--ink); }
+  .btn-ghost::after { content: '→'; font-size: 16px; }
+
+  /* TRUST BAR */
+  .trust-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--cream-dark);
+    padding: 16px 48px;
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-mid);
+  }
+
+  .trust-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* HERO CARD */
+  .hero-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .hero-card-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+  }
+
+  .case-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--cream-dark);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .case-row:last-child { border-bottom: none; }
+
+  .case-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .case-sub { font-size: 12px; color: var(--ink-light); margin-top: 2px; }
+
+  .case-price {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    margin-left: 12px;
+  }
+
+  .case-arrow {
+    font-size: 16px;
+    color: var(--ink-light);
+    margin-left: 8px;
+    transition: transform 0.2s;
+  }
+
+  .case-row:hover .case-arrow { transform: translateX(4px); }
+
+  .card-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cream-dark);
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--ink-mid);
+    font-weight: 300;
+    max-width: 520px;
+    margin-bottom: 56px;
+    line-height: 1.7;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 28px;
+    right: 28px;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .step {
+    position: relative;
+    padding: 0 20px 0 0;
+    z-index: 1;
+  }
+
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    margin-bottom: 20px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .step:hover .step-num {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* WHO WE HELP */
+  .who-section {
+    background: var(--cream-dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .who-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .who-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .who-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .who-card:hover { border-color: var(--accent); }
+
+  .who-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .who-card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .who-card-desc {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .price-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .price-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .price-card.featured {
+    border-color: var(--accent);
+    border-width: 1.5px;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .price-type {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .price-note {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+  }
+
+  .price-divider {
+    height: 1px;
+    background: var(--cream-dark);
+    margin-bottom: 18px;
+  }
+
+  .price-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .price-check {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .price-check svg { width: 9px; height: 9px; }
+
+  .price-btn {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .price-btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+  }
+
+  .price-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .price-btn-fill {
+    background: var(--accent);
+    color: white;
+  }
+
+  .price-btn-fill:hover { background: var(--accent-mid); }
+
+  /* TESTIMONIALS */
+  .testimonials-bg {
+    background: var(--ink);
+  }
+
+  .testimonials-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+
+  .testimonials-inner .section-label { color: #6B9E80; }
+  .testimonials-inner .section-title { color: white; margin-bottom: 48px; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .testimonial {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .testimonial-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .author-case {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 1px;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 100px 48px;
+    text-align: center;
+  }
+
+  .cta-section .section-label { display: block; margin-bottom: 16px; }
+
+  .cta-section .section-title {
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 16px;
+    color: var(--ink-mid);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .cta-input-row {
+    display: flex;
+    gap: 10px;
+    max-width: 420px;
+    margin: 0 auto 14px;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: white;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .cta-input:focus { border-color: var(--accent); }
+
+  .cta-note {
+    font-size: 12px;
+    color: var(--ink-light);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--cream-dark);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--ink); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(28, 26, 23, 0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--cream);
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalUp 0.3s ease;
+    border: 1px solid var(--border);
+  }
+
+  .modal-header {
+    padding: 24px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-mid);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .modal-close:hover {
+    background: var(--cream-dark);
+    color: var(--ink);
+  }
+
+  .modal-body {
+    padding: 24px 32px 28px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .modal-body h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 20px;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .modal-body h3:first-child { margin-top: 0; }
+
+  .modal-body p {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .modal-body ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .modal-body ul li {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    font-weight: 300;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .modal-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-row:last-child { border-bottom: none; }
+
+  .contact-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 2px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .contact-value {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  .contact-value:hover { color: var(--accent); }
+
+  .contact-note {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 3px;
+    font-weight: 300;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes modalUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .fade-up-1 { animation-delay: 0.1s; }
+  .fade-up-2 { animation-delay: 0.2s; }
+  .fade-up-3 { animation-delay: 0.3s; }
+  .fade-up-4 { animation-delay: 0.4s; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 48px 20px; gap: 40px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps::before { display: none; }
+    .who-inner { grid-template-columns: 1fr; padding: 48px 20px; gap: 32px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .section { padding: 48px 20px; }
+    .cta-section { padding: 60px 20px; }
+    footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+    .trust-bar { padding: 16px 20px; gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Immigrate<span>Path</span></div>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#who">Who we help</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#start" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<section style="max-width:1100px;margin:0 auto;">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow fade-up fade-up-1">Immigration legal services</div>
+      <h1 class="fade-up fade-up-2">Your path forward,<br><em>clearly explained.</em></h1>
+      <p class="hero-sub fade-up fade-up-3">Flat fees. Licensed attorneys. AI-powered guidance at every step. No hourly billing, no confusing forms, no guesswork.</p>
+      <div class="hero-actions fade-up fade-up-4">
+        <a href="#start" class="btn-primary">Check my eligibility</a>
+        <a href="#how" class="btn-ghost">See how it works</a>
+      </div>
+    </div>
+    <div class="hero-card fade-up fade-up-3">
+      <div class="hero-card-label">Select your case type</div>
+      <div class="case-row">
+        <div>
+          <div class="case-name">DACA renewal</div>
+          <div class="case-sub">I-821D + I-765 preparation and filing</div>
+        </div>
+        <div style="display:flex;align-items:center">
+          <div class="case-price">$349</div>
+          <div class="case-arrow">›</div>
+        </div>
+      </div>
+      <div class="case-row">
+        <div>
+          <div class="case-name">Green card (family-based)</div>
+          <div class="case-sub">I-130 / I-485 petition and filing</div>
+        </div>
+        <div style="display:flex;align-items:center">
+          <div class="case-price">$899</div>
+          <div class="case-arrow">›</div>
+        </div>
+      </div>
+      <div class="case-row">
+        <div>
+          <div class="case-name">Naturalization</div>
+          <div class="case-sub">N-400 preparation, interview prep</div>
+        </div>
+        <div style="display:flex;align-items:center">
+          <div class="case-price">$599</div>
+          <div class="case-arrow">›</div>
+        </div>
+      </div>
+      <div class="case-row">
+        <div>
+          <div class="case-name">Work visa extension</div>
+          <div class="case-sub">H-1B, O-1, TN renewals</div>
+        </div>
+        <div style="display:flex;align-items:center">
+          <div class="case-price">$749</div>
+          <div class="case-arrow">›</div>
+        </div>
+      </div>
+      <div class="card-footer">All prices include attorney review and filing. Government filing fees are separate and paid directly to USCIS.</div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-dot"></div>Licensed attorneys on every case</div>
+  <div class="trust-item"><div class="trust-dot"></div>Flat fees, no hourly billing</div>
+  <div class="trust-item"><div class="trust-dot"></div>Real-time case tracking</div>
+  <div class="trust-item"><div class="trust-dot"></div>English and Spanish support</div>
+</div>
+
+<section class="section" id="how">
+  <div class="section-label">How it works</div>
+  <div class="section-title">Four steps from today<br>to your application filed</div>
+  <p class="section-sub">Our AI handles the paperwork complexity. A real attorney handles the legal review. You stay informed every step of the way.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Answer a few questions</div>
+      <div class="step-desc">Our intake flow determines your eligibility, identifies the right case type, and builds your personal document checklist in minutes.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Upload your documents</div>
+      <div class="step-desc">We tell you exactly what you need. Upload at your own pace. Our AI reviews each document for completeness before it goes to your attorney.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Attorney review and filing</div>
+      <div class="step-desc">A licensed immigration attorney reviews your full application, signs off, and files directly with USCIS on your behalf.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Track your case</div>
+      <div class="step-desc">Your dashboard shows exactly where your case stands. We notify you the moment anything changes and answer questions along the way.</div>
+    </div>
+  </div>
+</section>
+
+<div class="who-section" id="who">
+  <div class="who-inner">
+    <div>
+      <div class="section-label">Who we help</div>
+      <div class="section-title" style="max-width:280px">Built for people, not law firms</div>
+      <p style="font-size:15px;color:var(--ink-mid);font-weight:300;line-height:1.7;margin-top:12px">Traditional immigration attorneys charge $200 to $500 per hour and take months to respond. We built ImmigratePath for the people who deserve better.</p>
+    </div>
+    <div class="who-cards">
+      <div class="who-card">
+        <div class="who-card-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#2B5C3F" stroke-width="1.5"/><path d="M3 15c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="who-card-title">DACA recipients</div>
+        <div class="who-card-desc">Time-sensitive renewals handled quickly, so your work authorization never lapses.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L2 7v9h5v-5h4v5h5V7L9 2z" stroke="#2B5C3F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="who-card-title">Families petitioning</div>
+        <div class="who-card-desc">Bringing a spouse, parent, or child to the US. We navigate the paperwork together.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="#2B5C3F" stroke-width="1.5"/><path d="M6 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="#2B5C3F" stroke-width="1.5"/></svg>
+        </div>
+        <div class="who-card-title">Skilled workers</div>
+        <div class="who-card-desc">H-1B, O-1, TN visas and extensions. We know what employers and USCIS need.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2a7 7 0 100 14A7 7 0 009 2z" stroke="#2B5C3F" stroke-width="1.5"/><path d="M9 6v4l2.5 1.5" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="who-card-title">Long-term residents</div>
+        <div class="who-card-desc">Ready to become a citizen? We prepare your N-400 and help you get ready for the interview.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <div class="section-title">One flat fee.<br>No surprises.</div>
+  <p class="section-sub">Every case includes AI-powered intake, document checklist, attorney review, and USCIS filing. Government fees are paid separately and directly.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-type">DACA renewal</div>
+      <div class="price-amount">$349</div>
+      <div class="price-note">One-time, all-in</div>
+      <div class="price-divider"></div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Eligibility check and checklist</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>I-821D and I-765 preparation</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Licensed attorney review and filing</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Real-time case tracking</div>
+      <button class="price-btn price-btn-outline">Get started</button>
+    </div>
+    <div class="price-card featured">
+      <div class="featured-badge">Most popular</div>
+      <div class="price-type">Green card (family)</div>
+      <div class="price-amount">$899</div>
+      <div class="price-note">One-time, all-in</div>
+      <div class="price-divider"></div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Full intake and case strategy</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>I-130 and I-485 preparation</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Licensed attorney review and filing</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Priority response within 24 hours</div>
+      <button class="price-btn price-btn-fill">Get started</button>
+    </div>
+    <div class="price-card">
+      <div class="price-type">Naturalization</div>
+      <div class="price-amount">$599</div>
+      <div class="price-note">One-time, all-in</div>
+      <div class="price-divider"></div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>N-400 preparation and review</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Civics interview preparation</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Licensed attorney review and filing</div>
+      <div class="price-feature"><div class="price-check"><svg viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round"/></svg></div>Real-time case tracking</div>
+      <button class="price-btn price-btn-outline">Get started</button>
+    </div>
+  </div>
+</section>
+
+<div class="testimonials-bg">
+  <div class="testimonials-inner">
+    <div class="section-label">What clients say</div>
+    <div class="section-title">Real people, real cases</div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="testimonial-text">"I had been putting off my DACA renewal for months because I didn't know where to start. ImmigratePath walked me through everything in one afternoon. Filed in two weeks."</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">MR</div>
+          <div>
+            <div class="author-name">Maria R.</div>
+            <div class="author-case">DACA renewal, Atlanta GA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-text">"We were quoted $4,000 by a local firm for our green card petition. ImmigratePath handled everything for $899 with an attorney who was responsive and thorough."</div>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:#3D7A58">JK</div>
+          <div>
+            <div class="author-name">James K.</div>
+            <div class="author-case">Green card petition, Decatur GA</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-text">"The document checklist alone saved me hours. I always knew exactly what was missing and what came next. Passed my naturalization interview on the first try."</div>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:#1D9E75">AP</div>
+          <div>
+            <div class="author-name">Ana P.</div>
+            <div class="author-case">Naturalization, Lawrenceville GA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section" id="start">
+  <span class="section-label">Get started</span>
+  <div class="section-title">Find out what you qualify for in 3 minutes</div>
+  <p>Enter your email and we will send you a free eligibility summary with next steps and exact pricing for your situation. No commitment required.</p>
+  <div class="cta-input-row">
+    <input type="email" class="cta-input" placeholder="Your email address">
+    <a href="#" class="btn-primary" style="white-space:nowrap">Check eligibility</a>
+  </div>
+  <div class="cta-note">No spam. No hourly fees. Just a clear path forward.</div>
+</section>
+
+<footer>
+  <div class="footer-note">ImmigratePath is a document preparation and case management platform. Legal services are provided by licensed immigration attorneys operating independently. ImmigratePath is not a law firm and does not provide legal advice directly. Attorney-client relationships are formed between clients and the referring attorney.</div>
+  <ul class="footer-links">
+    <li><a href="#" onclick="openModal('privacy'); return false;">Privacy</a></li>
+    <li><a href="#" onclick="openModal('terms'); return false;">Terms</a></li>
+    <li><a href="#" onclick="openModal('contact'); return false;">Contact</a></li>
+  </ul>
+</footer>
+
+<div class="modal-overlay" id="modal-privacy" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Privacy policy</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--ink-light);margin-bottom:20px">Last updated: April 2026</p>
+
+      <h3>What we collect</h3>
+      <p>When you use ImmigratePath, we collect information you provide directly to us (such as name, contact details, and immigration case details), information needed to prepare your application (supporting documents, employment history, family information), and technical information about how you use our service.</p>
+
+      <h3>How we use your information</h3>
+      <ul>
+        <li>To prepare and submit your immigration application</li>
+        <li>To connect you with a licensed attorney for legal review</li>
+        <li>To provide case updates, deadline reminders, and support</li>
+        <li>To improve our service and develop new features</li>
+      </ul>
+
+      <h3>Who we share it with</h3>
+      <p>We share your information only with the licensed attorney assigned to your case and with service providers who help us operate the platform (such as secure document storage and payment processing). We do not sell your data. We do not share your information with third parties for marketing purposes.</p>
+
+      <h3>How we protect it</h3>
+      <p>All documents and personal information are encrypted in transit and at rest. Access is strictly limited to the attorney assigned to your case and authorized personnel supporting your application. We maintain SOC 2 compliance standards for data handling.</p>
+
+      <h3>Your rights</h3>
+      <p>You can request a copy of your data, correct inaccurate information, or ask us to delete your account at any time. Contact us at privacy@immigratepath.com to exercise these rights.</p>
+
+      <h3>Questions</h3>
+      <p>If you have questions about this privacy policy, email us at privacy@immigratepath.com.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-terms" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Terms of service</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--ink-light);margin-bottom:20px">Last updated: April 2026</p>
+
+      <h3>What ImmigratePath is</h3>
+      <p>ImmigratePath is a document preparation and case management platform. We help you organize, prepare, and track your immigration application. We are not a law firm and do not provide legal advice directly.</p>
+
+      <h3>Attorney services</h3>
+      <p>All legal services on our platform are provided by licensed immigration attorneys operating independently. When you purchase a case package, you enter into an attorney-client relationship with the licensed attorney assigned to review and file your application, not with ImmigratePath. The attorney is solely responsible for all legal advice, strategy, and decisions related to your case.</p>
+
+      <h3>Fees and refunds</h3>
+      <p>Our flat fees cover platform access, AI-powered intake, document preparation support, and attorney review and filing. Government filing fees charged by USCIS are separate and paid directly to the government. If you cancel before your attorney begins review, you are eligible for a full refund. Once attorney review has begun, fees are non-refundable.</p>
+
+      <h3>No outcome guarantee</h3>
+      <p>Immigration outcomes depend on many factors outside our control, including USCIS processing times, policy changes, and the accuracy of information you provide. We cannot guarantee approval of your application. We can guarantee that your attorney will prepare and file your application with professional care.</p>
+
+      <h3>Your responsibilities</h3>
+      <p>You agree to provide accurate and complete information throughout your case. Providing false information on an immigration application is a federal crime with serious consequences including denial, deportation, and criminal prosecution.</p>
+
+      <h3>Limitation of liability</h3>
+      <p>ImmigratePath is not liable for the legal advice or professional conduct of independent attorneys using the platform. Attorneys carry their own professional liability insurance. Our liability for platform-related issues is limited to the fees you paid us.</p>
+
+      <h3>Changes to these terms</h3>
+      <p>We may update these terms from time to time. We will notify you of material changes by email. Continued use of the platform after changes means you accept the updated terms.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-contact" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Get in touch</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>We respond to every message within one business day. For urgent case matters, existing clients should log in to their dashboard to message their attorney directly.</p>
+
+      <div style="margin-top:20px">
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5l7 5 7-5M2 5v8a1 1 0 001 1h12a1 1 0 001-1V5M2 5a1 1 0 011-1h12a1 1 0 011 1" stroke="#2B5C3F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="contact-label">General inquiries</div>
+            <a href="mailto:hello@immigratepath.com" class="contact-value">hello@immigratepath.com</a>
+            <div class="contact-note">Questions about pricing, services, or how we work</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8a5 5 0 0110 0v4H3V8zM6 12v2M10 12v2" stroke="#2B5C3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="contact-label">Existing clients</div>
+            <a href="mailto:support@immigratepath.com" class="contact-value">support@immigratepath.com</a>
+            <div class="contact-note">Or log in to message your attorney directly</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 3h3l2 4-2 1a8 8 0 004 4l1-2 4 2v3a1 1 0 01-1 1A12 12 0 013 4a1 1 0 011-1z" stroke="#2B5C3F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="contact-label">Phone</div>
+            <a href="tel:+14045550199" class="contact-value">(404) 555-0199</a>
+            <div class="contact-note">English and Spanish, Mon to Fri 9am to 6pm ET</div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1c3 0 5 2 5 5 0 4-5 10-5 10S4 10 4 6c0-3 2-5 5-5z" stroke="#2B5C3F" stroke-width="1.5" stroke-linejoin="round"/><circle cx="9" cy="6" r="2" stroke="#2B5C3F" stroke-width="1.5"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="contact-label">Office</div>
+            <div class="contact-value">Atlanta, Georgia</div>
+            <div class="contact-note">By appointment only. Most clients never need to visit in person.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.getElementById('modal-' + id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
