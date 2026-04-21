@@ -26,7 +26,6 @@
   let actor = '';     // display name of the current device
   let events = [];    // ordered list of all known events for the current session
   let queue = [];     // events pending upload
-  let lastServerTime = 0;
 
   let pendingAction = null;
   let selectedMethod = 'cash';
@@ -298,15 +297,15 @@
   async function poll() {
     if (!session || !cfg.sheetsUrl) return;
     try {
-      const r = await apiGet({ action: 'fetch', code: session.code, since: lastServerTime || 0 });
+      // Fetch all events for the session — client dedupes by event ID.
+      // See apps-script.js for why we don't use since-filtering.
+      const r = await apiGet({ action: 'fetch', code: session.code });
       if (!r.ok) return;
       if (r.events && r.events.length) {
         const changed = mergeServerEvents(r.events);
         if (changed) render();
       }
-      if (r.serverTime) lastServerTime = r.serverTime;
       if (r.session && r.session.status === 'ended' && !sessionEnded()) {
-        // Server says session ended; reflect it locally
         addEvent({ type: 'reset' });
       }
     } catch (e) {
