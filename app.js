@@ -9,7 +9,7 @@
   // If DEFAULT_SHEETS_URL is set, everyone who visits the site uses it
   // automatically — they don't need to paste anything in settings.
   // =====================================================================
-  const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzh2CulRIUd6UpF5Xnqb6sitDEyu2CS4SAuQi-Bh_E1f3JUQvULujUO6xa7WW0QQ3f_/exec'; // <-- paste your Apps Script Web App URL here
+  const DEFAULT_SHEETS_URL = ''; // <-- paste your Apps Script Web App URL here
   const DEFAULT_SECRET = '';     // <-- paste your SECRET here if you set one
   // =====================================================================
 
@@ -552,7 +552,7 @@
     try {
       const r = await api({ action: 'create_session', host: actor, name: 'Session' });
       if (!r.ok) { alert('Failed to create session: ' + (r.error || 'unknown')); return; }
-      session = { code: r.code };
+      session = { code: String(r.code) };
       saveSession();
       loadEvents();
       render();
@@ -579,7 +579,7 @@
     try {
       const r = await api({ action: 'join_session', code: code });
       if (!r.ok) { errEl.textContent = r.error || 'Could not join'; errEl.classList.remove('hidden'); return; }
-      session = { code: r.code };
+      session = { code: String(r.code) };
       saveSession();
       loadEvents();
       render();
