@@ -4,7 +4,6 @@
 // so reconciliation is straightforward.
 
 (function () {
-
   // =====================================================================
   // CONFIGURATION — set these before deploying to GitHub Pages.
   // If DEFAULT_SHEETS_URL is set, everyone who visits the site uses it
@@ -13,7 +12,7 @@
   const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzh2CulRIUd6UpF5Xnqb6sitDEyu2CS4SAuQi-Bh_E1f3JUQvULujUO6xa7WW0QQ3f_/exec'; // <-- paste your Apps Script Web App URL here
   const DEFAULT_SECRET = '';     // <-- paste your SECRET here if you set one
   // =====================================================================
-  
+
   const CFG_KEY = 'poker-config-v4';
   const SESSION_KEY = 'poker-session-v4';
   const ACTOR_KEY = 'poker-actor-v4';
@@ -22,7 +21,7 @@
 
   const POLL_INTERVAL_MS = 5000;
 
-  let cfg = { sheetsUrl: '', secret: '' };
+  let cfg = { sheetsUrl: DEFAULT_SHEETS_URL, secret: DEFAULT_SECRET };
   let session = null; // { code, name } — null if not in a session
   let actor = '';     // display name of the current device
   let events = [];    // ordered list of all known events for the current session
@@ -37,7 +36,17 @@
   // ---------- Storage ----------
 
   function loadCfg() {
-    try { const c = localStorage.getItem(CFG_KEY); if (c) cfg = Object.assign(cfg, JSON.parse(c)); } catch (e) {}
+    try {
+      const c = localStorage.getItem(CFG_KEY);
+      if (c) {
+        const stored = JSON.parse(c);
+        // Stored values override defaults, but only if they're non-empty.
+        // This ensures the hardcoded DEFAULT_SHEETS_URL still works for
+        // users who had previously saved empty settings.
+        if (stored.sheetsUrl) cfg.sheetsUrl = stored.sheetsUrl;
+        if (stored.secret) cfg.secret = stored.secret;
+      }
+    } catch (e) {}
   }
   function saveCfg() { try { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); } catch (e) {} }
 
