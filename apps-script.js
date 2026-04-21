@@ -23,7 +23,7 @@ const SESSIONS_SHEET = 'Sessions';
 
 function doPost(e) {
   try {
-    const body = JSON.parse(e.postData.contents);
+    const body = parsePostBody(e);
     if (SECRET && body.secret !== SECRET) {
       return json({ ok: false, error: 'bad secret' });
     }
@@ -268,4 +268,29 @@ function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Parses the POST body. Handles two shapes:
+// 1. Pure JSON body (from fetch with Content-Type: text/plain) — contents is the JSON directly
+// 2. Form-encoded body from enctype=text/plain (from iOS Safari workaround) —
+//    contents looks like: "payload=<json>\r\n"
+// Also handles regular form posts where e.parameter has a "payload" field.
+function parsePostBody(e) {
+  // Path 1: Form submitted with regular encoding, payload in e.parameter
+  if (e && e.parameter && e.parameter.payload) {
+    try { return JSON.parse(e.parameter.payload); } catch (err) {}
+  }
+
+  if (!e || !e.postData || !e.postData.contents) return {};
+  const raw = e.postData.contents;
+
+  // Path 2: enctype=text/plain form body: "payload=<json>\r\n"
+  // (The name/value are separated by '=' and the trailing \r\n may be present.)
+  if (raw.indexOf('payload=') === 0) {
+    const val = raw.substring('payload='.length).replace(/\r?\n$/, '');
+    try { return JSON.parse(val); } catch (err) {}
+  }
+
+  // Path 3: Pure JSON body
+  try { return JSON.parse(raw); } catch (err) { return {}; }
 }
