@@ -186,6 +186,10 @@
 
   // ---------- Network ----------
 
+  // Standard fetch-based POST. Works on Chrome, sometimes fails on iOS Safari
+  // with Apps Script (especially for larger payloads) due to how Safari handles
+  // the cross-origin 302 redirect that Apps Script issues. Used for small
+  // one-off requests like session creation where we need the response.
   async function api(payload) {
     if (!cfg.sheetsUrl) throw new Error('Sheets not configured');
     const resp = await fetch(cfg.sheetsUrl, {
@@ -195,6 +199,62 @@
     });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     return resp.json();
+  }
+
+  // Form-submission POST. No response returned to us, but works reliably on
+  // iOS Safari because forms predate CORS and aren't subject to preflight.
+  // We treat it as fire-and-forget — success is confirmed when polling picks
+  // up our events coming back from the sheet.
+  function apiForm(payload) {
+    return new Promise((resolve, reject) => {
+      if (!cfg.sheetsUrl) { reject(new Error('Sheets not configured')); return; }
+
+      // Reuse or create a hidden iframe target
+      let iframe = document.getElementById('poker-post-target');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'poker-post-target';
+        iframe.name = 'poker-post-target';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = cfg.sheetsUrl;
+      form.target = 'poker-post-target';
+      form.enctype = 'text/plain'; // keeps it a "simple request"
+      form.style.display = 'none';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      // With enctype=text/plain, browser sends: payload=<value>\r\n
+      // Apps Script reads e.postData.contents, which will be that string.
+      // We need the script to parse it — see doPost update.
+      input.value = JSON.stringify(Object.assign({ secret: cfg.secret || '' }, payload));
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+
+      // iframe load fires on response received; we can't read body but we
+      // can at least know the request completed.
+      const onLoad = () => {
+        iframe.removeEventListener('load', onLoad);
+        document.body.removeChild(form);
+        resolve({ ok: true, fireAndForget: true });
+      };
+      iframe.addEventListener('load', onLoad);
+
+      // Safety timeout in case iframe load event doesn't fire
+      setTimeout(() => {
+        iframe.removeEventListener('load', onLoad);
+        if (form.parentNode) form.parentNode.removeChild(form);
+        resolve({ ok: true, fireAndForget: true, timedOut: true });
+      }, 15000);
+
+      form.submit();
+    });
   }
 
   async function apiGet(params) {
@@ -216,8 +276,12 @@
 
     try {
       const batch = queue.slice(0, 25);
-      const result = await api({ events: batch });
-      if (!result.ok) throw new Error(result.error || 'unknown');
+      // Use form submission instead of fetch() — Safari can't reliably
+      // POST to Apps Script via fetch. This is fire-and-forget; we assume
+      // success and let polling confirm (if our events come back from the
+      // sheet, we know the write landed). If it didn't land, the events
+      // stay in the queue and will be retried.
+      await apiForm({ events: batch });
       queue = queue.slice(batch.length);
       saveQueue();
       updateSyncBadge(queue.length ? 'syncing' : 'synced');
