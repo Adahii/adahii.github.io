@@ -9,7 +9,7 @@
   // If DEFAULT_SHEETS_URL is set, everyone who visits the site uses it
   // automatically — they don't need to paste anything in settings.
   // =====================================================================
-  const DEFAULT_SHEETS_URL = ''; // <-- paste your Apps Script Web App URL here
+  const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzh2CulRIUd6UpF5Xnqb6sitDEyu2CS4SAuQi-Bh_E1f3JUQvULujUO6xa7WW0QQ3f_/exec'; // <-- paste your Apps Script Web App URL here
   const DEFAULT_SECRET = '';     // <-- paste your SECRET here if you set one
   // =====================================================================
 
