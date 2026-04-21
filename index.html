@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Poker Tracker" />
+<meta name="theme-color" content="#0f172a" />
+<link rel="apple-touch-icon" href="icon.png" />
+<link rel="manifest" href="manifest.json" />
+<title>Poker Buy-in Tracker</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: #f5f5f4; color: #1c1917;
+    font-size: 16px; -webkit-font-smoothing: antialiased;
+  }
+  body {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height: 100vh;
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 16px 14px 40px; }
+
+  /* ---- Welcome screen ---- */
+  .welcome { padding: 40px 8px 20px; }
+  .welcome h1 { font-size: 24px; font-weight: 600; margin: 0 0 6px; }
+  .welcome .sub { font-size: 14px; color: #78716c; margin-bottom: 28px; }
+  .welcome .sep { text-align: center; color: #a8a29e; font-size: 12px; margin: 20px 0; }
+
+  .big-btn {
+    width: 100%; height: 52px; font-size: 16px; font-weight: 500;
+    border-radius: 10px; margin-bottom: 10px;
+  }
+
+  .needs-setup {
+    background: #fef3c7; border-radius: 10px; padding: 14px;
+    font-size: 13px; color: #92400e; margin-bottom: 18px; line-height: 1.5;
+  }
+  .needs-setup a { color: #78350f; font-weight: 600; }
+
+  /* ---- Header in session ---- */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .title { font-size: 18px; font-weight: 600; }
+  .code-pill {
+    font-family: ui-monospace, monospace; font-size: 13px; font-weight: 600;
+    background: #1c1917; color: #fff; padding: 4px 10px; border-radius: 8px;
+    letter-spacing: 1px;
+  }
+  .code-pill.tap { cursor: pointer; }
+  .sync-badge {
+    font-size: 11px; padding: 4px 8px; border-radius: 10px;
+    font-family: ui-monospace, monospace; font-weight: 500;
+    background: #e7e5e4; color: #57534e; white-space: nowrap;
+  }
+  .sync-badge.synced { background: #dcfce7; color: #166534; }
+  .sync-badge.syncing { background: #fef3c7; color: #92400e; }
+  .sync-badge.error { background: #fee2e2; color: #991b1b; }
+  .sync-badge.local { background: #e0e7ff; color: #3730a3; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .stat { background: #fff; border-radius: 10px; padding: 10px 12px; border: 0.5px solid #e7e5e4; }
+  .stat.warn { background: #fef3c7; border-color: #fcd34d; }
+  .stat.warn .label, .stat.warn .value { color: #92400e; }
+  .stat .label { font-size: 11px; color: #78716c; margin-bottom: 2px; }
+  .stat .value { font-size: 20px; font-weight: 600; }
+
+  .card {
+    background: #fff; border-radius: 12px; padding: 14px;
+    border: 0.5px solid #e7e5e4; margin-bottom: 14px;
+  }
+  .card-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #44403c; }
+
+  input, button, select {
+    font-family: inherit; font-size: 16px;
+    border-radius: 8px; border: 0.5px solid #d6d3d1;
+    background: #fff; color: #1c1917;
+    -webkit-appearance: none; appearance: none;
+  }
+  input { width: 100%; height: 42px; padding: 0 12px; margin-bottom: 8px; }
+  input:focus { outline: 2px solid #3b82f6; outline-offset: -1px; }
+  input.code-input {
+    text-align: center; font-size: 22px; letter-spacing: 6px;
+    font-family: ui-monospace, monospace; font-weight: 600; height: 52px;
+  }
+  button {
+    background: #fff; height: 42px; padding: 0 14px;
+    font-weight: 500; cursor: pointer;
+    transition: transform 0.05s, background 0.1s;
+  }
+  button:active { transform: scale(0.97); }
+  button.primary { background: #1c1917; color: #fff; border-color: #1c1917; }
+  button.primary:active { background: #44403c; }
+  button.primary:disabled { background: #a8a29e; border-color: #a8a29e; }
+  button.active { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
+  button.danger { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+  button.success { background: #dcfce7; color: #166534; border-color: #86efac; }
+
+  .quick-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+  .quick-row button { height: 34px; font-size: 13px; padding: 0; }
+
+  .methods-label { font-size: 12px; color: #78716c; margin-bottom: 6px; }
+  .methods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+  .methods button { height: 36px; font-size: 13px; padding: 0; }
+
+  .confirm {
+    margin-top: 10px; padding: 10px;
+    background: #fef3c7; border-radius: 8px; color: #92400e; font-size: 13px;
+  }
+  .confirm .msg { margin-bottom: 8px; white-space: pre-line; }
+  .confirm .actions { display: flex; gap: 6px; }
+  .confirm button { flex: 1; height: 34px; font-size: 13px; }
+
+  .list-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; padding: 0 2px;
+  }
+  .list-header .h { font-size: 13px; font-weight: 600; }
+  .list-header .hint { font-size: 11px; color: #78716c; }
+
+  .player {
+    background: #fff; border: 0.5px solid #e7e5e4; border-radius: 10px;
+    padding: 10px 12px; margin-bottom: 6px;
+  }
+  .player.has-unpaid { border-color: #fcd34d; background: #fffbeb; }
+  .player-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .player-name { font-size: 15px; font-weight: 600; }
+  .player-total { font-size: 17px; font-weight: 600; font-family: ui-monospace, monospace; }
+  .badges { display: flex; flex-wrap: wrap; gap: 4px; }
+  .badge {
+    display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 10px;
+    font-family: ui-monospace, monospace; cursor: pointer; user-select: none;
+  }
+  .badge.paid { background: #dcfce7; color: #166534; }
+  .badge.pending { background: #fef3c7; color: #92400e; }
+  .badge.owed { background: #fee2e2; color: #991b1b; }
+
+  .empty {
+    text-align: center; color: #a8a29e; font-size: 13px;
+    padding: 20px; background: #fff; border-radius: 10px;
+    border: 0.5px dashed #d6d3d1;
+  }
+
+  details { margin-bottom: 14px; }
+  summary { cursor: pointer; font-size: 13px; color: #57534e; padding: 8px 0; font-weight: 500; }
+  .log {
+    font-family: ui-monospace, monospace; font-size: 11px;
+    color: #57534e; line-height: 1.7;
+    background: #fff; border: 0.5px solid #e7e5e4; border-radius: 8px;
+    padding: 10px 12px; max-height: 240px; overflow-y: auto;
+  }
+
+  .footer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+  .footer-actions button { height: 38px; font-size: 13px; }
+
+  .settings-link {
+    display: block; text-align: center; font-size: 12px;
+    color: #78716c; padding: 8px; text-decoration: none;
+    border-top: 0.5px solid #e7e5e4; margin-top: 10px;
+  }
+
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 14px; padding: 20px;
+    width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto;
+  }
+  .modal h2 { margin: 0 0 14px; font-size: 17px; }
+  .modal p { font-size: 13px; color: #57534e; line-height: 1.5; margin: 0 0 10px; }
+  .modal label { display: block; font-size: 12px; color: #44403c; margin: 10px 0 4px; font-weight: 500; }
+  .modal .actions { display: flex; gap: 8px; margin-top: 14px; }
+  .modal .actions button { flex: 1; }
+
+  .code-display {
+    text-align: center; font-family: ui-monospace, monospace;
+    font-size: 56px; font-weight: 700; letter-spacing: 10px;
+    padding: 20px 0; color: #1c1917;
+  }
+  .code-hint { text-align: center; color: #78716c; font-size: 13px; margin-bottom: 14px; }
+
+  .err { color: #991b1b; font-size: 13px; margin-top: 6px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Welcome / join screen -->
+<div class="app" id="screen-welcome">
+  <div class="welcome">
+    <h1>Poker tracker</h1>
+    <div class="sub">Track buy-ins and payments for your cash game.</div>
+
+    <div id="setup-warning" class="needs-setup hidden">
+      ⚠️ Set up Google Sheets sync first so other phones can join this session. <a href="#" id="go-to-settings">Open settings</a>
+    </div>
+
+    <button class="big-btn primary" id="btn-create">Start new session</button>
+
+    <div class="sep">— or —</div>
+
+    <div class="card">
+      <div class="card-title">Join a session</div>
+      <input type="text" id="join-code" class="code-input" placeholder="0000" maxlength="4" inputmode="numeric" autocomplete="off" />
+      <input type="text" id="join-name" placeholder="Your name (so others know who logged what)" autocomplete="off" autocapitalize="words" />
+      <button class="big-btn primary" id="btn-join">Join session</button>
+      <div class="err hidden" id="join-err"></div>
+    </div>
+
+    <a href="#" class="settings-link" id="welcome-settings">⚙ Sync settings</a>
+  </div>
+</div>
+
+<!-- Session screen -->
+<div class="app hidden" id="screen-session">
+  <div class="header">
+    <div class="header-left">
+      <div class="title">Poker</div>
+      <div class="code-pill tap" id="code-pill" title="Tap to copy join code"></div>
+    </div>
+    <div id="sync-badge" class="sync-badge local">local</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="label">Players</div>
+      <div class="value" id="stat-players">0</div>
+    </div>
+    <div class="stat">
+      <div class="label">On table</div>
+      <div class="value" id="stat-total">$0</div>
+    </div>
+    <div class="stat warn">
+      <div class="label">Unpaid</div>
+      <div class="value" id="stat-unpaid">$0</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Add buy-in</div>
+    <input type="text" id="name-input" placeholder="Player name" autocomplete="off" autocapitalize="words" />
+    <input type="number" id="amount-input" placeholder="Amount ($)" min="0" step="5" inputmode="numeric" />
+    <div class="quick-row">
+      <button class="quick" data-amt="100">$100</button>
+      <button class="quick" data-amt="200">$200</button>
+      <button class="quick" data-amt="300">$300</button>
+      <button class="quick" data-amt="500">$500</button>
+    </div>
+    <div class="methods-label">Payment method</div>
+    <div class="methods">
+      <button class="pay-method active" data-method="cash">Cash</button>
+      <button class="pay-method" data-method="venmo">Venmo</button>
+      <button class="pay-method" data-method="zelle">Zelle</button>
+      <button class="pay-method" data-method="owed">Owed</button>
+    </div>
+    <button id="add-btn" class="primary" style="width: 100%;">Add buy-in</button>
+    <div id="confirm-row" class="confirm hidden">
+      <div class="msg" id="confirm-msg"></div>
+      <div class="actions">
+        <button id="confirm-yes">Confirm</button>
+        <button id="confirm-no">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-header">
+    <div class="h">Players</div>
+    <div class="hint">Tap yellow badges to mark paid</div>
+  </div>
+  <div id="player-list">
+    <div class="empty">No buy-ins yet</div>
+  </div>
+
+  <details style="margin-top: 14px;">
+    <summary>Session log</summary>
+    <div class="log" id="log">Empty</div>
+  </details>
+
+  <div class="footer-actions">
+    <button id="cashout-btn">Cash out player</button>
+    <button id="leave-btn">Leave session</button>
+  </div>
+  <button id="end-btn" class="danger" style="width: 100%; height: 38px; font-size: 13px; margin-bottom: 12px;">End session for everyone</button>
+
+  <a href="#" class="settings-link" id="settings-link">⚙ Sync settings</a>
+</div>
+
+<!-- Session created modal -->
+<div class="modal-bg" id="created-modal">
+  <div class="modal">
+    <h2>Session started</h2>
+    <p>Share this code with others so they can join and log buy-ins too:</p>
+    <div class="code-display" id="created-code">0000</div>
+    <div class="code-hint">They go to the same URL and tap "Join session"</div>
+    <div class="actions">
+      <button id="copy-code">Copy code</button>
+      <button id="created-ok" class="primary">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-bg" id="settings-modal">
+  <div class="modal">
+    <h2>Sync settings</h2>
+    <p>Paste your Google Apps Script Web App URL. Everyone joining this session must use the same URL.</p>
+
+    <label>Apps Script Web App URL</label>
+    <input type="text" id="sheets-url" placeholder="https://script.google.com/macros/s/..." />
+    <button id="test-sync" style="width: 100%; margin-top: 6px;">Test connection</button>
+    <div id="test-result" style="font-size: 12px; margin-top: 8px;"></div>
+
+    <label style="margin-top: 16px;">Session secret (optional)</label>
+    <input type="text" id="sheets-secret" placeholder="If you set SECRET in the script" />
+
+    <p style="margin-top: 16px;">Need setup instructions? See the README in the repo.</p>
+
+    <div class="actions">
+      <button id="settings-cancel">Cancel</button>
+      <button id="settings-save" class="primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cashout modal -->
+<div class="modal-bg" id="cashout-modal">
+  <div class="modal">
+    <h2>Cash out player</h2>
+    <div id="cashout-list" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;"></div>
+    <div class="actions">
+      <button id="cashout-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
